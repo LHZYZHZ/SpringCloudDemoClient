@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Random;
+
 
 /**
  * Created by liaohua on 2018/7/26.
@@ -22,9 +24,13 @@ public class HelloController {
     private DiscoveryClient client;
 
     @RequestMapping(value = "/hello",method = RequestMethod.GET)
-    public String index(){
+    public String hello() throws InterruptedException {
         ServiceInstance instance = client.getLocalServiceInstance();
-        logger.info("/hello,host:"+instance.getHost()+", service_id"+instance.getServiceId());
+        //让线程等待几秒
+        int sleeptime = new Random().nextInt(3000);
+        logger.info("sleeptime"+sleeptime);
+        Thread.sleep(sleeptime);
+        logger.info("/hello,host: "+instance.getHost()+", service_id: "+instance.getServiceId());
         return "Hello World";
     }
 }
